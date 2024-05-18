@@ -4,37 +4,44 @@ from selenium import webdriver
 import time
 from dateutil import parser
 
-# accounts = [
-#     "https://twitter.com/Mr_Derivatives",
-#     "https://twitter.com/warrior_0719",
-#     "https://twitter.com/ChartingProdigy",
-#     "https://twitter.com/allstarcharts",
-#     "https://twitter.com/yuriymatso",
-#     "https://twitter.com/TriggerTrades",
-#     "https://twitter.com/AdamMancini4",
-#     "https://twitter.com/CordovaTrades",
-#     "https://twitter.com/Barchart",
-#     "https://twitter.com/RoyLMattox",
-# ]
-accounts = []
-for inputs in range(10):
-    account = input(f"Enter account {inputs+1} URL you want to search for: ")
-    accounts.append(account)
+accounts = [
+    "https://twitter.com/Mr_Derivatives",
+    "https://twitter.com/warrior_0719",
+    "https://twitter.com/ChartingProdigy",
+    "https://twitter.com/allstarcharts",
+    "https://twitter.com/yuriymatso",
+    "https://twitter.com/TriggerTrades",
+    "https://twitter.com/AdamMancini4",
+    "https://twitter.com/CordovaTrades",
+    "https://twitter.com/Barchart",
+    "https://twitter.com/RoyLMattox",
+]
+# accounts = []
+# for inputs in range(10):
+#     account = input(f"Enter account {inputs+1} URL you want to search for: ")
+#     accounts.append(account)
 stocks = []
 result = []
 name = input("Enter stock name: ")
 interval = int(input("Enter time entirval in minute: "))
 
+# 2st step use chrome webdriver to fetch the url
 driver = webdriver.Chrome()
 
 for i in range(len(accounts)):
+    # Here we fetch every url from the list
     respose = driver.get(accounts[i])
+    # Made this time long to be able login to access real data
     time.sleep(60)
+    # 3st step save page content/markup
     html = driver.page_source
+    # 4st step create soup object to parse content
     soup = BeautifulSoup(html, "lxml")
+    # 5st find all tweets to fetch date and content from it
     account_divs = soup.find_all(
         "div", {"class": "css-175oi2r r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu"}
     )
+    # 6st step filter content by time to find tweets in interval we entered
     for account_div in account_divs:
         date = parser.parse(account_div.find("time").attrs["datetime"]).time().minute
         if date <= interval:
@@ -51,6 +58,7 @@ for row in stocks:
         result.append(column.text.upper())
 
 
+# 6st step find the times stock was mention in it
 def num_of_stockk(stock_name):
     return result.count(stock_name)
 
