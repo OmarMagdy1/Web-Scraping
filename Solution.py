@@ -16,8 +16,10 @@ accounts = [
     "https://twitter.com/Barchart",
     "https://twitter.com/RoyLMattox",
 ]
+# This part i commented because i entered 10 accounts manually to reduce the time
 # accounts = []
-# for inputs in range(10):
+# num_of_accounts = int(input("Number of accounts you wiil enter: "))
+# for inputs in range(num_of_accounts):
 #     account = input(f"Enter account {inputs+1} URL you want to search for: ")
 #     accounts.append(account)
 stocks = []
@@ -28,9 +30,9 @@ interval = int(input("Enter time entirval in minute: "))
 # 2st step use chrome webdriver to fetch the url
 driver = webdriver.Chrome()
 
-for i in range(len(accounts)):
+for account in range(len(accounts)):
     # Here we fetch every url from the list
-    respose = driver.get(accounts[i])
+    respose = driver.get(accounts[account])
     # Made this time long to be able login to access real data
     time.sleep(60)
     # 3st step save page content/markup
